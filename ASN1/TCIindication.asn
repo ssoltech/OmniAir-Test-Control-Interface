@@ -49,6 +49,11 @@ Event ::= ENUMERATED {
     eDot3ChannelAssigned                (7),    -- Channel assigned as per WME-Notification.indication
     eDot3RequestMatchedAvailAppService  (8),    -- request matched with available application-service as per WME-Notification.indication
     eDot2VerificationCompleteWithResult (9),    -- message signature verification is complete
+    eDot2Dot1Initialized                (10),   -- PKI state initialized
+    eDot2Dot1Enrolled                   (11),   -- PKI state enrollment certificate is issued and downloaded
+    eDot2Dot1AuthReqResp                (12),   -- PKI state autorization certificate is requested
+    eDot2Dot1AuthDownResp               (13),   -- PKI state autorization certificate download requested
+    eDot2Dot1Provisioned                (14),   -- PKI state autorization certificate is issued and downloaded
     exception                           (15)    -- exception reported from IUT
 }
 

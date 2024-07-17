@@ -1,0 +1,96 @@
+TCI-160921
+DEFINITIONS AUTOMATIC TAGS ::= 
+BEGIN
+
+IMPORTS
+Exception,
+Response, 
+MsgID FROM TCI-CommonTypes
+
+ResponseInfo FROM TCI-responseInfo
+
+Indication FROM TCI-indication
+
+;
+
+
+TCI160921 ::= CHOICE{
+  request      [0] Request160921, -- Add new request message types
+  response     [1] Response,
+  indication   [2] Dot2Dot1Indication,
+  responseInfo [3] Dot2Dot1ResponseInfo,
+  exception    [4] Exception,
+  ...
+}
+
+SetInitialize ::= SEQUENCE {
+  bootstrapUrl     VisibleString,
+  ...
+}
+
+StartProvisioning  ::= BOOLEAN
+
+UnAuthorized       ::= BOOLEAN
+UnEnrolled         ::= BOOLEAN
+UnInitialized      ::= BOOLEAN
+Authorized         ::= BOOLEAN
+
+SetPKIState ::= CHOICE {
+  unInitialized    [0] UnInitialized,
+  unEnrolled       [1] UnEnrolled,
+  unAuthorized     [2] UnAuthorized,
+  authorized       [3] Authorized,
+  ...
+}
+
+Request160921 ::=  SEQUENCE {
+  messageId   MESSAGE-ID-AND-TYPE160921.&id({MessageTypes}),
+  value       MESSAGE-ID-AND-TYPE160921.&Type({MessageTypes}{@.messageId}),
+  ...
+}
+
+MESSAGE-ID-AND-TYPE160921 ::= CLASS {
+  &id    MsgID UNIQUE,
+  &Type
+} WITH SYNTAX {&Type IDENTIFIED BY &id}
+
+MessageTypes MESSAGE-ID-AND-TYPE160921 ::= {
+  { SetInitialize  IDENTIFIED BY setInitialize } |
+ 	{ SetPKIState IDENTIFIED BY setPKIState} |
+  { StartProvisioning  IDENTIFIED BY startProvisioning }
+}
+
+setInitialize                 MsgID ::= 1
+setPKIState                   MsgID ::= 2
+startProvisioning             MsgID ::= 3
+
+
+
+Dot2Dot1Indication ::= Indication (WITH COMPONENTS {
+  radio,
+  event (
+    eDot2Dot1Initialized |
+    eDot2Dot1Enrolled |
+    eDot2Dot1AuthReqResp |
+    eDot2Dot1AuthDownResp |
+    eDot2Dot1Provisioned |
+    exception
+  ),
+  eventParams (
+    WITH COMPONENTS {service} |  -- Add appropriate event params for Dot2Dot1
+    WITH COMPONENTS {wsm} |
+    WITH COMPONENTS {ip} |
+    WITH COMPONENTS {security}
+  ) OPTIONAL,
+  pdu  OPTIONAL,
+  exception OPTIONAL
+})
+
+Dot2Dot1ResponseInfo ::= ResponseInfo (WITH COMPONENTS {
+  msgID,  
+  resultCode,
+  info (WITH COMPONENTS {ipv6InterfaceInfo}) OPTIONAL, -- Update InfoContent with security related parameters?
+  exception OPTIONAL
+})
+
+END

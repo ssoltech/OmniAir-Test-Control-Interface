@@ -68,20 +68,8 @@ startProvisioning             MsgID ::= 3
 
 Dot2Dot1Indication ::= Indication (WITH COMPONENTS {
   radio,
-  event (
-    eDot2Dot1Initialized |
-    eDot2Dot1Enrolled |
-    eDot2Dot1AuthReqResp |
-    eDot2Dot1AuthDownResp |
-    eDot2Dot1Provisioned |
-    exception
-  ),
-  eventParams (
-    WITH COMPONENTS {service} |  -- Add appropriate event params for Dot2Dot1
-    WITH COMPONENTS {wsm} |
-    WITH COMPONENTS {ip} |
-    WITH COMPONENTS {security}
-  ) OPTIONAL,
+  event ( eDot2Dot1),
+  eventParams ( WITH COMPONENTS {dot2dot1}) OPTIONAL,
   pdu  OPTIONAL,
   exception OPTIONAL
 })

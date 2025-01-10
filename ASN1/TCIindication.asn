@@ -122,6 +122,7 @@ Dot2Dot1State ::= ENUMERATED {
     eCcfDownResp            (6),
     eCrlDownResp            (7),
     eMbrTriggeredResp       (8),
+    ...,
     exception               (15) --exception added with large value to allow for future expansion
 }
 
